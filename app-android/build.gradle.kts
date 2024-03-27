@@ -1,8 +1,8 @@
 plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.android.application)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -58,5 +58,5 @@ dependencies {
     implementation(libs.decompose.decompose)
     implementation(libs.decompose.extensionsCompose)
     implementation(libs.dagger.dagger)
-    kapt(libs.dagger.daggerCompiler)
+    ksp(libs.dagger.daggerCompiler)
 }
