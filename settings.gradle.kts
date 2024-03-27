@@ -15,7 +15,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "decompose-dagger-sample"
+rootProject.name = "decompose-hilt-sample"
 
 include(":app-android")
 include(":repository")

@@ -1,6 +1,6 @@
-# Decompose Dagger Sample
+# Decompose Dagger-Hilt Sample
 
-This is a sample Android project demonstrating the use of [Decompose](https://github.com/arkivanov/Decompose) library together with [Dagger](https://github.com/google/dagger) DI framework.
+This is a sample Android project demonstrating the use of [Decompose](https://github.com/arkivanov/Decompose) library together with [Dagger-Hilt](https://github.com/google/dagger) DI framework.
 
 ## Project Structure
 

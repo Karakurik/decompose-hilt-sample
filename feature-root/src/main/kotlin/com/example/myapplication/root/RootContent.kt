@@ -10,8 +10,6 @@ import com.arkivanov.decompose.extensions.compose.jetpack.stack.animation.scale
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.animation.stackAnimation
 import com.example.myapplication.details.DetailsContent
 import com.example.myapplication.list.ListContent
-import com.example.myapplication.root.RootComponent.Child.DetailsChild
-import com.example.myapplication.root.RootComponent.Child.ListChild
 
 @Composable
 fun RootContent(component: RootComponent, modifier: Modifier = Modifier) {
@@ -21,8 +19,15 @@ fun RootContent(component: RootComponent, modifier: Modifier = Modifier) {
         animation = stackAnimation(animator = fade() + scale()),
     ) {
         when (val child = it.instance) {
-            is ListChild -> ListContent(component = child.component, modifier = Modifier.fillMaxWidth())
-            is DetailsChild -> DetailsContent(component = child.component, modifier = Modifier.fillMaxWidth())
+            is RootComponent.Child.ListChild -> ListContent(
+                component = child.component,
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            is RootComponent.Child.DetailsChild -> DetailsContent(
+                component = child.component,
+                modifier = Modifier.fillMaxWidth()
+            )
         }
     }
 }

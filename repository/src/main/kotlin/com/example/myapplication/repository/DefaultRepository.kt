@@ -2,7 +2,7 @@ package com.example.myapplication.repository
 
 import javax.inject.Inject
 
-class DefaultRepository @Inject constructor() : Repository {
+class Repository @Inject constructor() {
 
     private val itemMap: Map<String, Item> =
         List(100) { index ->
@@ -13,9 +13,9 @@ class DefaultRepository @Inject constructor() : Repository {
             )
         }.associateBy(Item::id)
 
-    override fun getItems(): List<Item> =
+    fun getItems(): List<Item> =
         itemMap.values.toList()
 
-    override fun getItem(id: String): Item =
+    fun getItem(id: String): Item =
         itemMap.getValue(key = id)
 }

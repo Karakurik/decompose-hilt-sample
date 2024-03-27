@@ -11,14 +11,21 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.defaultComponentContext
+import com.example.myapplication.root.RootComponent
 import com.example.myapplication.root.RootContent
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var factory: RootComponent.Factory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val component = DaggerMainDaggerComponent.create().rootComponentFactory(defaultComponentContext())
+        val component = factory(defaultComponentContext())
 
         setContent {
             MaterialTheme {

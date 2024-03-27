@@ -9,23 +9,23 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 
-class DefaultListComponent @AssistedInject internal constructor(
+class ListComponent @AssistedInject internal constructor(
     repository: Repository,
     @Assisted componentContext: ComponentContext,
     @Assisted private val onItemSelected: (id: String) -> Unit,
-) : ListComponent, ComponentContext by componentContext {
+) : ComponentContext by componentContext {
 
-    override val items: Value<List<Item>> = MutableValue(repository.getItems())
+    val items: Value<List<Item>> = MutableValue(repository.getItems())
 
-    override fun onItemClicked(id: String) {
+    fun onItemClicked(id: String) {
         onItemSelected(id)
     }
 
     @AssistedFactory
-    interface Factory : ListComponent.Factory {
-        override fun invoke(
+    interface Factory {
+        operator fun invoke(
             componentContext: ComponentContext,
             onItemSelected: (id: String) -> Unit,
-        ): DefaultListComponent
+        ): ListComponent
     }
 }

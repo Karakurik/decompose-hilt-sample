@@ -9,25 +9,25 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 
-class DefaultDetailsComponent @AssistedInject internal constructor(
+class DetailsComponent @AssistedInject internal constructor(
     repository: Repository,
     @Assisted componentContext: ComponentContext,
     @Assisted("itemId") itemId: String,
     @Assisted("onFinished") private val onFinished: () -> Unit,
-) : DetailsComponent, ComponentContext by componentContext {
+) : ComponentContext by componentContext {
 
-    override val item: Value<Item> = MutableValue(repository.getItem(id = itemId))
+    val item: Value<Item> = MutableValue(repository.getItem(id = itemId))
 
-    override fun onCloseClicked() {
+    fun onCloseClicked() {
         onFinished()
     }
 
     @AssistedFactory
-    interface Factory : DetailsComponent.Factory {
-        override fun invoke(
+    interface Factory {
+        operator fun invoke(
             componentContext: ComponentContext,
             @Assisted("itemId") itemId: String,
             @Assisted("onFinished") onFinished: () -> Unit,
-        ): DefaultDetailsComponent
+        ): DetailsComponent
     }
 }
