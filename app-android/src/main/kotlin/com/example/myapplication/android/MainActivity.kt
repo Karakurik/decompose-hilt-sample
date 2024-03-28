@@ -10,7 +10,8 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
-import com.arkivanov.decompose.defaultComponentContext
+import com.arkivanov.decompose.ExperimentalDecomposeApi
+import com.arkivanov.decompose.retainedComponent
 import com.example.myapplication.root.RootComponent
 import com.example.myapplication.root.RootContent
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,10 +23,11 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var factory: RootComponent.Factory
 
+    @OptIn(ExperimentalDecomposeApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val component = factory(defaultComponentContext())
+        val component = retainedComponent(factory = factory::invoke)
 
         setContent {
             MaterialTheme {
