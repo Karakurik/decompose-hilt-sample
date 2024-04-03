@@ -14,15 +14,29 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.serialization.Serializable
 
-class RootComponent @AssistedInject internal constructor(
+interface RootComponent {
+
+    val stack: Value<ChildStack<*, Child>>
+
+    sealed class Child {
+        class ListChild(val component: ListComponent) : Child()
+        class DetailsChild(val component: DetailsComponent) : Child()
+    }
+
+    fun interface Factory {
+        operator fun invoke(componentContext: ComponentContext): RootComponent
+    }
+}
+
+class DefaultRootComponent @AssistedInject internal constructor(
     private val listFactory: ListComponent.Factory,
-    private val detailsFactory: DetailsComponent.Factory,
+    private val detailsComponentFactory: DetailsComponent.Factory,
     @Assisted componentContext: ComponentContext,
-) : ComponentContext by componentContext {
+) : RootComponent, ComponentContext by componentContext {
 
     private val nav = StackNavigation<Config>()
 
-    val stack: Value<ChildStack<*, Child>> =
+    override val stack: Value<ChildStack<*, RootComponent.Child>> =
         childStack(
             source = nav,
             initialConfiguration = Config.List,
@@ -31,10 +45,10 @@ class RootComponent @AssistedInject internal constructor(
             childFactory = ::child,
         )
 
-    private fun child(config: Config, context: ComponentContext): Child =
+    private fun child(config: Config, context: ComponentContext): RootComponent.Child =
         when (config) {
-            is Config.List -> Child.ListChild(listComponent(context))
-            is Config.Details -> Child.DetailsChild(detailsComponent(context, config))
+            is Config.List -> RootComponent.Child.ListChild(listComponent(context))
+            is Config.Details -> RootComponent.Child.DetailsChild(detailsComponent(context, config))
         }
 
     private fun listComponent(context: ComponentContext): ListComponent =
@@ -47,7 +61,7 @@ class RootComponent @AssistedInject internal constructor(
         context: ComponentContext,
         config: Config.Details,
     ): DetailsComponent =
-        detailsFactory(
+        detailsComponentFactory(
             componentContext = context,
             itemId = config.itemId,
             onFinished = nav::pop,
@@ -62,13 +76,8 @@ class RootComponent @AssistedInject internal constructor(
         data class Details(val itemId: String) : Config
     }
 
-    sealed class Child {
-        class ListChild(val component: ListComponent) : Child()
-        class DetailsChild(val component: DetailsComponent) : Child()
-    }
-
     @AssistedFactory
-    interface Factory {
-        operator fun invoke(componentContext: ComponentContext): RootComponent
+    interface Factory : RootComponent.Factory {
+        override fun invoke(componentContext: ComponentContext): DefaultRootComponent
     }
 }

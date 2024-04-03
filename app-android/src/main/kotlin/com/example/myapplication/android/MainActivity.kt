@@ -12,6 +12,7 @@ import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.ExperimentalDecomposeApi
 import com.arkivanov.decompose.retainedComponent
+import com.example.myapplication.root.DefaultRootComponent
 import com.example.myapplication.root.RootComponent
 import com.example.myapplication.root.RootContent
 import dagger.hilt.android.AndroidEntryPoint
